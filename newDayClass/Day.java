@@ -5,7 +5,7 @@ private static ArrayList<int> beginningOfMonth = new ArrayList<int>();
 private static ArrayList<int> endOfMonthLeap = new ArrayList<int>();
 private static ArrayList<int> beginningOfMonthLeap = new ArrayList<int>();
 
-Day(int d, int m, int y)
+public Day(int day, int month, int year)
 Day(Day)
 Day() //returns today's date
 int getDayOfWeek() // Use “Principle of Least Surprise” 0-6 or 1-7 which is similar to Python and C
