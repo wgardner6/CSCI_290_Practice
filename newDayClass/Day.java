@@ -116,10 +116,24 @@ public class Day
 	    return false;
     }    
     int dayDifference(Day other){
+	int dayDiff = 0;
 	if(this.year!=other.year){
-	    int yearDiff = other.year-this.year;
+	    int diff = Math.abs(this.year-other.year);
+	    for(int n = 0; n <= diff; n++){
+		if(((this.year+n)%4==0)&&((this.year+n)%100!=0)||((this.year+n)%400==0))
+		    dayDiff = 366;
+		else
+		    dayDiff = 365;
+		System.out.println(dayDiff);
+	    }
 	}
-
+	if(this.month!=other.month){
+	    int diff = Math.abs(this.month-other.month);
+	    for(int n = 0; n<=diff;n++){
+		
+	    }
+	}
+	return dayDiff;
     }    
     
     //Day() //returns today's date

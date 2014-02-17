@@ -22,6 +22,9 @@ public class dayTester{
 	Day anotherDay = new Day(17,2,2014);
 	Day copyDay = new Day(anotherDay);
 	System.out.println(anotherDay.equals(copyDay));
+	Day exDay = new Day(17,2,2010);
+	Day diffDay = new Day(17,2,2016);
+	System.out.format("Final difference %d%n",exDay.dayDifference(diffDay));
 	//System.out.println(myDay.getDayOfWeek());
 	//System.out.println(myDay.isLeapYear());
 	//System.out.println(myDay);
