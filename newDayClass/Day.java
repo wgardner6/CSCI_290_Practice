@@ -14,10 +14,13 @@ private int year;
 	@param year Year not equal to zero
 
 */
-public Day(int day, int month, int year){
-	day = day;
-	month = month;
-	year = year;
+public Day(int iday, int imonth, int iyear){
+	if(iday<32&&iday>0)
+	day = iday;
+	if(imonth>0&&imonth<13)
+	month = imonth;
+	if (iyear>0&&iyear<10001)
+	year = iyear;
 }
 /**
 	Copy constructor. 
@@ -64,6 +67,15 @@ public int getDayOfWeek(){
 	int m = monthTable[month-1];
 	
 }
+
+boolean isLeapYear(){
+	if((this.year%4==0)&&(this.year%100==0)&&(this.year%400==0))
+	  return 1;
+	else
+	  return 0;
+}
+
+
 
 //Day() //returns today's date
 /**
