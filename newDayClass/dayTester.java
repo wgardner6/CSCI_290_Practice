@@ -19,14 +19,14 @@ public class dayTester{
 	    System.out.println(myDay.getDayOfWeek());
 	}
 	
-	Day anotherDay = new Day(17,2,2014);
+	Day anotherDay = new Day(17,2,2013);
 	Day copyDay = new Day(anotherDay);
 	System.out.println(anotherDay.equals(copyDay));
 	Day exDay = new Day(17,2,2010);
-	Day diffDay = new Day(17,2,2016);
+	Day diffDay = new Day(17,4,2010);
 	System.out.format("Final difference %d%n",exDay.dayDifference(diffDay));
 	//System.out.println(myDay.getDayOfWeek());
-	//System.out.println(myDay.isLeapYear());
+	System.out.format("Checking to see if leap year %s%n",anotherDay.isLeapYear());
 	//System.out.println(myDay);
     }
     

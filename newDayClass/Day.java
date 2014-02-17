@@ -102,40 +102,110 @@ public class Day
 	    dayWeek-=7;
 	return dayWeek;	
     }
-    
-    boolean isLeapYear(){
-	if((this.year%4==0)&&(this.year%100!=0)||(this.year%400==0))
-	    return true;
-	else
-	    return false;
+    private static boolean isLeap(int year){
+        if((year%4==0)&&(year%100!=0)||(year%400==0))
+            return true;
+        else
+            return false;
     }
-    boolean equals(Day other){
+    public boolean isLeapYear(){
+	return isLeap(this.year);
+    }
+    public boolean equals(Day other){
 	if(this.day==other.day && this.month==other.month && this.year==other.year)
 	    return true;
 	else
 	    return false;
-    }    
-    int dayDifference(Day other){
+    }
+    private int totDays(int days){
+	int years = days/365;
+	int remDays = days%365;
+	int totDays = years*365;
+	for (int n=0;n<=years;n++){
+	    if (isLeap(year+n))
+		totDays++;
+	}
+	totDays += remDays;
+	return totDays;
+    }
+    public int dayDifference(Day other){
+	int tDays = convertToDays(this.day,this.month);
+	int oDays = convertToDays(other.day, other.month);
+	int dayDiff = totDays(tDays-oDays);
+
+	/**	int dDiff = this.day - other.day;
+	int mDiff = this.month - other.month;
+	int yDiff = this.year - other.year;
 	int dayDiff = 0;
-	if(this.year!=other.year){
-	    int diff = Math.abs(this.year-other.year);
-	    for(int n = 0; n <= diff; n++){
-		if(((this.year+n)%4==0)&&((this.year+n)%100!=0)||((this.year+n)%400==0))
-		    dayDiff = 366;
-		else
-		    dayDiff = 365;
-		System.out.println(dayDiff);
+	if(yDiff>0){
+	    //int diff = Math.abs(this.year-other.year);
+	    if (yDiff>1){
+		while(yDiff>1){
+		    if(((this.year+yDiff)%4==0)&&((this.year+yDiff)%100!=0)||((this.year+yDiff)%400==0))
+			dayDiff += 366;
+		    else
+			dayDiff += 365;
+		    System.out.println(dayDiff);
+		    yDiff--;
+		}
 	    }
 	}
-	if(this.month!=other.month){
-	    int diff = Math.abs(this.month-other.month);
-	    for(int n = 0; n<=diff;n++){
-		
+	if(mDiff>0){
+	    if (mDiff>1){
+		while(mDiff>1){
+		    dayDiff += monthSize[this.month+mDiff-1];
+		    System.out.format("This difference of days between months is %s%n",dayDiff);
+		    mDiff--;
+		}
 	    }
 	}
+	*/	    
 	return dayDiff;
     }    
+    public int getYear()
+    {
+	return year;
+    }
+
+    public int getMonth()
+    {
+	return month;
+    }
+
+    public int getDay()
+    {
+	return day;
+    }
+
+    public boolean isLastDayOfMonth()
+    {
+	if (isLeapYear())
+	    {
+		if (endOfMonthLeap[this.month]==this.day)
+		    return true;
+		else
+		    return false;
+	    }
+	else
+	    {
+		if (endOfMonth[this.month]==this.day)
+		    return true;
+		else
+		    return false;
+	    }
+    }
     
+    public boolean isBeginningOfMonth()
+    {
+	if (this.day==1)
+	    {
+		return true;
+	    }
+	else
+	    {
+		return false;
+	    }
+    }
     //Day() //returns today's date
     /**
        int getDayOfWeek() // Use “Principle of Least Surprise” 0-6 or 1-7 which is similar to Python and C
