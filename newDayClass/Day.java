@@ -129,54 +129,29 @@ public class Day
 	return totDays;
     }
     public int dayDifference(Day other){
-	int tDays = convertToDays(this.day,this.month);
-	int oDays = convertToDays(other.day, other.month);
+	int tDays = convertToTotalDays(this.day,this.month, this.year);
+	tDays += this.year*365;
+	int oDays = convertToTotalDays(other.day, other.month, other.year);
+	oDays += other.year*365;
 	int dayDiff = totDays(tDays-oDays);
-
-	/**	int dDiff = this.day - other.day;
-	int mDiff = this.month - other.month;
-	int yDiff = this.year - other.year;
-	int dayDiff = 0;
-	if(yDiff>0){
-	    //int diff = Math.abs(this.year-other.year);
-	    if (yDiff>1){
-		while(yDiff>1){
-		    if(((this.year+yDiff)%4==0)&&((this.year+yDiff)%100!=0)||((this.year+yDiff)%400==0))
-			dayDiff += 366;
-		    else
-			dayDiff += 365;
-		    System.out.println(dayDiff);
-		    yDiff--;
-		}
-	    }
-	}
-	if(mDiff>0){
-	    if (mDiff>1){
-		while(mDiff>1){
-		    dayDiff += monthSize[this.month+mDiff-1];
-		    System.out.format("This difference of days between months is %s%n",dayDiff);
-		    mDiff--;
-		}
-	    }
-	}
-	*/	    
+	System.out.format("The difference in days between the two is %d%n",totDays(tDays-oDays));
 	return dayDiff;
     }    
     public int getYear()
     {
 	return year;
     }
-
+    
     public int getMonth()
     {
 	return month;
     }
-
+    
     public int getDay()
     {
 	return day;
     }
-
+    
     public boolean isLastDayOfMonth()
     {
 	if (isLeapYear())
@@ -206,36 +181,38 @@ public class Day
 		return false;
 	    }
     }
-    //Day() //returns today's date
     /**
-       int getDayOfWeek() // Use “Principle of Least Surprise” 0-6 or 1-7 which is similar to Python and C
-       boolean isLeapYear()
-       boolean equals(Day other)
-       void setDay(int d, int m, int y)
-       void parseDay(String) // works for “2014-02-09” or “5/11/1970”
-       Rick
-       int getYear()
-       int getMonth()
-       int getDay()
-       boolean isLastDayOfMonth()  
-       boolean isBeginningOfMonth()
-       Antanas
-       void incrementDay(int) //argument is optional, defaults to 1. Negative arg. decrements day
-       void incrementMonth(int)
-       void incrementYear(int)
-       int dayDifference(Day other)
-       private int convertToDays()
-       private int convertToDate()
-       
-       boolean isHoliday()
-       
-       int compareTo(Day other)//if this is less than other return negative. 0 if equal.
-       string toString() 
-       
-    */
-    
-    
-    
-    
-    
+     * This function takes no arguments. It takes the month attribute and converts it into days and then sums these days with the day attribute.
+     * This sum is returned as totalDays. It accounts for leap year if necessary.
+     */
+    private int convertToTotalDays(int thisDay, int thisMonth, int thisYear)
+    {
+        int daysFromMonth = 0;
+        int totalDays;
+        if (isLeap(thisYear) == false)
+	    {
+		for (int i = 0; i <= (thisMonth-2); i++)
+		    {
+			daysFromMonth = monthSize[i] + daysFromMonth;
+		    }
+		totalDays = thisDay + daysFromMonth;
+		return totalDays;
+	    }
+        else
+	    {
+		for (int i = 0; i <= (thisMonth-2); i++)
+		    {
+			daysFromMonth = monthSizeLeap[i] + daysFromMonth;
+		    }
+		totalDays = thisDay + daysFromMonth;
+		return totalDays;
+	    }
+    }
+    public int compareTo(Day other){
+	return dayDifference(other);
+    }
+    // void setDay(int d, int m, int y)
+    // void parseDay(String) // works for “2014-02-09” or “5/11/1970”
+    // int compareTo(Day other)//if this is less than other return negative. 0 if equal.
+    // string toString() 
 }
