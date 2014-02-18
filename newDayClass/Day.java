@@ -12,9 +12,9 @@ public class Day
     private static int[] beginningOfMonthLeap = {1,32,61,92,122,153,183,214,245,275,306,336};
     /**
        Constructs a day with user inputted day, month, and year.
-       @param day Day between 1 and 31.
-       @param month Month between 1 and 12
-       @param year Year not equal to zero
+       @param iday Day between 1 and 31.
+       @param imonth Month between 1 and 12
+       @param iyear Year not equal to zero
        
     */
     public Day(int iday, int imonth, int iyear){
@@ -46,7 +46,10 @@ public class Day
 	month = other.month;
 	year = other.year;
     }
-    
+    /**
+       getDayOfWeek. Returns 0-6 representing day of the week starting on Sunday.
+       
+    */    
     public int getDayOfWeek(){
 	int[] doomsDays;
 	doomsDays = new int[13];	
@@ -92,42 +95,67 @@ public class Day
 	int doomsday = (remSumRems+anchorDay)%7;
 	int diff = this.day - doomsDays[this.month];
 	int dayWeek = (remSumRems+anchorDay+diff)%7;
-	//System.out.println(dayWeek)
-	
-	
-	
 	if (dayWeek<0)
 	    dayWeek+=7;
 	if (dayWeek>6)
 	    dayWeek-=7;
 	return dayWeek;	
     }
+    /**
+       Private function to determine if argument is a leap year.
+       @param year 
+    */
     private static boolean isLeap(int year){
         if((year%4==0)&&(year%100!=0)||(year%400==0))
             return true;
         else
             return false;
     }
+    /**
+       Public function to determine if instance of Day is a leap year.
+    */
     public boolean isLeapYear(){
 	return isLeap(this.year);
     }
+    /**
+       Public function to determine if two instances of Day are equal.
+       @param other Separate instance of Day
+    */
     public boolean equals(Day other){
 	if(this.day==other.day && this.month==other.month && this.year==other.year)
 	    return true;
 	else
 	    return false;
     }
+    /**
+       Private function to count number of days including possible leap years.
+       @param days Integer representing given number of days.
+    */
     private int totDays(int days){
 	int years = days/365;
 	int remDays = days%365;
 	int totDays = years*365;
-	for (int n=0;n<=years;n++){
-	    if (isLeap(year+n))
-		totDays++;
+	if(years>0){
+	    for (int n=0;n<=years;n++){
+		if (isLeap(this.getYear()+n)){
+		    totDays++;
+		}
+	    }
+	}
+	else if(years<0){
+	    for (int n = years; n<=0;n++){
+		if(isLeap(this.getYear()-n)){
+		    totDays--;
+		}
+	    }
 	}
 	totDays += remDays;
 	return totDays;
     }
+    /**
+       Public function to compute the difference in days between two dates.
+       @param other Separate instance of day.
+    */
     public int dayDifference(Day other){
 	int tDays = convertToTotalDays(this.day,this.month, this.year);
 	tDays += this.year*365;
@@ -137,21 +165,30 @@ public class Day
 	System.out.format("The difference in days between the two is %d%n",totDays(tDays-oDays));
 	return dayDiff;
     }    
+    /**
+       Public function to return year of instance.
+    */
     public int getYear()
     {
 	return year;
     }
-    
+    /**
+       Public function to return month of instance.
+    */
     public int getMonth()
     {
 	return month;
     }
-    
+    /**
+       Public function to return day of instance.
+    */
     public int getDay()
     {
 	return day;
     }
-    
+    /**
+       Public function to determine if given instance is the end of the month.
+    */
     public boolean isLastDayOfMonth()
     {
 	if (isLeapYear())
@@ -169,7 +206,9 @@ public class Day
 		    return false;
 	    }
     }
-    
+    /** 
+	Public function to determine if given instance is the beginning of the month.
+    */
     public boolean isBeginningOfMonth()
     {
 	if (this.day==1)
@@ -182,9 +221,11 @@ public class Day
 	    }
     }
     /**
-     * This function takes no arguments. It takes the month attribute and converts it into days and then sums these days with the day attribute.
-     * This sum is returned as totalDays. It accounts for leap year if necessary.
-     */
+       Private function to convert day and month to which day they represent in the year. It accounts for leap year if necessary.
+       @param thisDay Day of interest
+       @param thisMonth Month of interest
+       @param thisYear Year of interest
+    */
     private int convertToTotalDays(int thisDay, int thisMonth, int thisYear)
     {
         int daysFromMonth = 0;
@@ -208,6 +249,10 @@ public class Day
 		return totalDays;
 	    }
     }
+    /**
+       Public function to compare two instances of Day.
+       @param other Separate instance of Day
+    */
     public int compareTo(Day other){
 	return dayDifference(other);
     }
