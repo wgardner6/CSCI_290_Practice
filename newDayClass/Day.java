@@ -19,8 +19,8 @@ public class Day
     */
     public Day(int iday, int imonth, int iyear){
 	if(iday<32&&iday>0){
-	    day = iday;
-	}      
+            day = iday;
+        }
 	else {
 	    throw new IllegalArgumentException("Day out of range.");
 	}
@@ -36,6 +36,13 @@ public class Day
 	else {
 	    throw new IllegalArgumentException("Month out of range.");
 	}
+	if(day==31 && (month!=(1|3|5|7|8|10|12)))
+	    throw new IllegalArgumentException("Day exceeds days in month.");
+	else if (day==30 && (month==2))
+	    throw new IllegalArgumentException("Day exceeds days in month.");
+	else if (day==29 && !isLeap(year))
+	    throw new IllegalArgumentException("Day exceeds days in month.");
+		    
     }
     /**
        Copy constructor. 
@@ -162,7 +169,6 @@ public class Day
 	int oDays = convertToTotalDays(other.day, other.month, other.year);
 	oDays += other.year*365;
 	int dayDiff = totDays(tDays-oDays);
-	System.out.format("The difference in days between the two is %d%n",totDays(tDays-oDays));
 	return dayDiff;
     }    
     /**
