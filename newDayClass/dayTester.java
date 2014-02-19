@@ -2,39 +2,151 @@ import java.util.ArrayList;
 
 public class dayTester{
     public static void main(String[] args){
-	ArrayList<Day> list = new ArrayList<Day>();
-	/**for (int d = 1; d < 31; d++){
-	    for (int m = 1; m < 13; m++){
-		for (int y = 1900; y < 2020; y++){
-		    //System.out.println(y);
-		    list.add(new Day(d,m,y));
-		    //System.out.format("The year is %d%n",y);
-		    Day checkDay = new Day(d,m,y);
-		    //System.out.println(checkDay.isLeapYear());
-		}
-	    }
-	}
-	*/		
-	/**for (int d = 1; d<29; d++){
-	    Day myDay = new Day(d,2,2014);
-	    System.out.format("The day of the week for day = %d, month = %d, and year = %d is %d", d,m,y,myDay.getDayOfWeek());
-	}
-	*/
 	Day anotherDay = new Day(17,2,2014);
 	Day copyDay = new Day(anotherDay);
 	Day exDay = new Day(17,2,1900);
         Day diffDay = new Day(17,4,2018);
+	Day leapDay = new Day(17,4,2012);
+	Day monthDay = new Day(1,4,2014);
+	Day endDay = new Day(28,2,2014);
+	ArrayList<Day> list = new ArrayList<Day>();
+	int count = 0;
+	for (int d = 16; d < 23; d++){
+	    list.add(new Day(d,2,2014));
+	    Day checkDay = new Day(d,2,2014);
+	    if(checkDay.getDayOfWeek()!=count)
+		System.out.format("Error in day of week calculation");
+	    count++;
+	}
+	System.out.format("%nChecking to see if copy constructor and equals works, should return true, returns:  %b%n%n",anotherDay.equals(copyDay));
+	System.out.format("Checking to see if equals check works, should return false, returns:  %b%n%n",anotherDay.equals(exDay));
+	System.out.format("Both equals checks work so we can proceed to traditional testing%n%n");
+	if (exDay.isBeginningOfMonth()==true)
+	    System.out.format("isBeginningOfMonth failed");
+	if (monthDay.isBeginningOfMonth()==false)
+	    System.out.format("isBeginningOfMonth failed on start of month");
+	if (endDay.isLastDayOfMonth()==false)
+	    System.out.format("isLastDayOfMonth failed on end of month");
+	if (exDay.getDay()!=17)
+	    System.out.format("getDay failed");
+	if (exDay.getMonth()!=2)
+	    System.out.format("getMonth failed");
+	if (exDay.getYear()!=1900)
+            System.out.format("getYear failed");
+	if (exDay.dayDifference(diffDay)!=-43158)
+	    System.out.format("dayDifference failed with a negative difference");
+	if (diffDay.dayDifference(exDay)!=43158)
+	    System.out.format("dayDifference failed with a positive difference");
+	if (exDay.compareTo(diffDay)==0)
+	    System.out.format("compareTo failed with two different days");
+	if (anotherDay.compareTo(copyDay)!=0)
+	    System.out.format("compareTo failed with two identical days");
+	if (anotherDay.getDayOfWeek()!=1)
+	    System.out.format("getDayOfWeek failed with known day of Monday");
+	if (leapDay.isLeapYear()==false)
+	    System.out.format("isLeapYear failed with known leap year");
+	if (diffDay.isLeapYear()==true)
+	    System.out.format("isLeapYear failed with known non leap year");
+	//Trial 1
 
-	System.out.format("Checking to see if copy constructor works %b%n%n",anotherDay.equals(copyDay));
-	System.out.format("Checking to see if equals check works %b%n%n",anotherDay.equals(exDay));
-	System.out.format("The day is %s, the month is %s, the year is %s%n%n", exDay.getDay(), exDay.getMonth(), exDay.getYear());
-	System.out.format("Final difference between exDay and diffDay %d and reversed %d%n%n",exDay.dayDifference(diffDay),diffDay.dayDifference(exDay));
-	System.out.format("Checking compareTo function for above difference %d%n%n",exDay.compareTo(diffDay));
-	System.out.format("Checking compareTo function for identical dates %d%n%n", anotherDay.compareTo(copyDay));
-	System.out.format("Checking to see if %d-%d-%d is indeed Monday %b.%n%n",anotherDay.getDay(),anotherDay.getMonth(), anotherDay.getYear(),anotherDay.getDayOfWeek());
-	System.out.format("Checking to see if %d is leap year %s%n%n",exDay.getYear(),exDay.isLeapYear());
-	System.out.format("Checking to see if error thrown outside range for Feb-31%n%n");
-	Day febDay = new Day(31,2,2010);
+        Day currentDay1 = new Day(19,2,2014);
+        Day correctDay1 = new Day(20,2,2014);
+
+        currentDay1.incrementDay(1);
+
+        if (currentDay1.equals(correctDay1) == false)
+	    {
+		System.out.println("incrementDay did not work in trial 1.");
+	    }
+
+        // Trial 2
+
+        Day currentDay2 = new Day(27,2,2016);
+        Day correctDay2 = new Day(3,3,2016);
+
+        currentDay2.incrementDay(5);
+
+        if (currentDay2.equals(correctDay2) == false)
+	    {
+		System.out.println("incrementDay did not work in trial 2.");
+	    }
+
+        // Trial 3
+
+        Day currentDay3 = new Day(31,12,2015);
+        Day correctDay3 = new Day(30,12,2016);
+
+        currentDay3.incrementDay(365);
+
+        if (currentDay3.equals(correctDay3) == false)
+	    {
+		System.out.println("incrementDay did not work in trial 3.");
+	    }
+
+        // Trial 4
+
+        Day currentDay4 = new Day(19,2,2014);
+        Day correctDay4 = new Day(18,2,2014);
+
+        currentDay4.incrementDay(-1);
+
+        if (currentDay4.equals(correctDay2) == false)
+	    {
+		System.out.println("incrementDay did not work in trial 4.");
+	    }
+
+        // Trial 5
+
+        Day currentDay5 = new Day(1,3,2016);
+        Day correctDay5 = new Day(28,2,2016);
+
+        currentDay5.incrementDay(-2);
+
+        if (currentDay5.equals(correctDay2) == false)
+	    {
+		System.out.println("incrementDay did not work in trial 5.");
+	    }
+
+        // Trial 2
+
+        Day currentDay6 = new Day(3,3,2016);
+        Day correctDay6 = new Day(1,1,2015);
+
+        currentDay6.incrementDay(-427);
+
+        if (currentDay6.equals(correctDay2) == false)
+	    {
+		System.out.println("incrementDay did not work in trial 6.");
+	    }
+
+        // Testing incrementYear
+
+        // Trial 1
+
+        Day currentDay7 = new Day(1,1,2015);
+        Day correctDay7 = new Day(1,1,2016);
+
+        currentDay7.incrementYear(1);
+
+        if (currentDay7.equals(correctDay1) == false)
+	    {
+		System.out.println("incrementYear did not work in trial 1.");
+	    }
+
+        // Trial 2
+
+        Day currentDay8 = new Day(1,1,2016);
+        Day correctDay8 = new Day(1,1,2015);
+
+        currentDay8.incrementYear(-1);
+
+        if (currentDay8.equals(correctDay1) == false)
+	    {
+		System.out.println("incrementYear did not work in trial 2.");
+	    }
+
+
+
     }
     
     

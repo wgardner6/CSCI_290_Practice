@@ -3,15 +3,15 @@ public class Day
     private int day;
     private int month;
     private int year;
-    private static int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
-    private static int[] monthSize = {31,28,31,30,31,30,31,31,30,31,30,31};
-    private static int[] monthSizeLeap = {31,29,31,30,31,30,31,31,30,31,30,31};
-    private static int[] endOfMonth = {31,59,90,120,151,181,212,243,273,304,334,365};
-    private static int[] endOfMonthLeap = {31,60,91,121,152,182,213,244,274,305,335,366};
-    private static int[] beginningOfMonth = {1,32,60,91,121,152,182,213,244,274,305,335};
-    private static int[] beginningOfMonthLeap = {1,32,61,92,122,153,183,214,245,275,306,336};
+    private static final int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
+    private static final int[] monthSize = {31,28,31,30,31,30,31,31,30,31,30,31};
+    private static final int[] monthSizeLeap = {31,29,31,30,31,30,31,31,30,31,30,31};
+    private static final int[] endOfMonth = {31,59,90,120,151,181,212,243,273,304,334,365};
+    private static final int[] endOfMonthLeap = {31,60,91,121,152,182,213,244,274,305,335,366};
+    private static final int[] beginningOfMonth = {1,32,60,91,121,152,182,213,244,274,305,335};
+    private static final int[] beginningOfMonthLeap = {1,32,61,92,122,153,183,214,245,275,306,336};
     /**
-       Constructs a day with user inputted day, month, and year.
+       Constructs a day with user inputted day, month, and year in that specific format.
        @param iday Day between 1 and 31.
        @param imonth Month between 1 and 12
        @param iyear Year not equal to zero
@@ -36,8 +36,10 @@ public class Day
 	else {
 	    throw new IllegalArgumentException("Month out of range.");
 	}
-	if(day==31 && (month!=(1|3|5|7|8|10|12)))
+	if(day==31 && (month==2|month==4|month==6|month==9|month==11)){
+	    System.out.println("Error Here");
 	    throw new IllegalArgumentException("Day exceeds days in month.");
+	}
 	else if (day==30 && (month==2))
 	    throw new IllegalArgumentException("Day exceeds days in month.");
 	else if (day==29 && !isLeap(year))
@@ -197,16 +199,16 @@ public class Day
     */
     public boolean isLastDayOfMonth()
     {
-	if (isLeapYear())
+	if (this.isLeapYear())
 	    {
-		if (endOfMonthLeap[this.month]==this.day)
+		if (monthSizeLeap[this.month-1]==this.day)
 		    return true;
 		else
 		    return false;
 	    }
 	else
 	    {
-		if (endOfMonth[this.month]==this.day)
+		if (monthSize[this.month-1]==this.day)
 		    return true;
 		else
 		    return false;
@@ -262,6 +264,75 @@ public class Day
     public int compareTo(Day other){
 	return dayDifference(other);
     }
+    /**
+     * This function takes a given number of days that represent the sum of the day and month attributes, and it updates the day and month attributes. The arguement totalDays must
+     * be within the range of 1 to 365 days.
+     * @param totalDays (The sum of the day and month attributes). Needs to be within range of 1 to 365 days.
+     */
+    private void convertToDay(int totalDays)
+    {
+        if (totalDays < 1 || totalDays > 365)
+	    {
+		throw new IllegalArgumentException("totalDays out of range.");
+		    }
+        
+        int newMonth = 0;
+        int newDay = 1;
+        
+        for (int i = 0; i < (beginningOfMonth.length - 1); i++)
+	    {
+		if (totalDays < beginningOfMonth[i])
+		    {
+			newMonth = months[i-1];
+			totalDays = totalDays - beginningOfMonth[i-1];
+		    }
+	    }
+        newDay = newDay + totalDays;
+        day = newDay;
+        month = newMonth;
+    }
+
+
+
+
+    /**
+     * Takes an argument for the number of days to increment. Negative argument decrements in days.
+     * @param incrementDays Integer representing days to increment
+     */
+    public void incrementDay(int incrementDays)
+    {
+        int yearsToAdvance;
+        int daysToBeConverted;
+        
+        int totalDays = totDays(incrementDays);
+	yearsToAdvance = totalDays / 365;
+        daysToBeConverted = totalDays % 365;
+        year += yearsToAdvance;
+        convertToDay(daysToBeConverted);
+    }
+    
+    /**
+     * Takes an argument for the number of months to increment. Negative argument decrements in months.
+     * The standard number of days in a month for this function is 31 days. So each month in the argument will be thought of as having 31 days.
+     * @param incrementMonths Integer representing months to increment
+          
+    public void incrementMonth(int incrementMonths)
+    {
+        int numberOfDays = incrementMonths * 31;
+        incrementDay(numberOfDays);
+    }
+    */
+    /**
+     * Takes an argument for the number of years to increment. Negative argument decrements in years.
+     * @param incrementYears Integer representing years to increment
+     */
+    public void incrementYear(int incrementYears)
+    {
+        int numberOfDays = incrementYears * 365;
+        incrementDay(numberOfDays);
+    }
+
+
     // void setDay(int d, int m, int y)
     // void parseDay(String) // works for “2014-02-09” or “5/11/1970”
     // int compareTo(Day other)//if this is less than other return negative. 0 if equal.
